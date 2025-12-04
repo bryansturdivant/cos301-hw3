@@ -88,7 +88,22 @@ def p_statement_assign(t):
 
 def p_statement_expr(t):
     'statement : expression'
-    print(t[1])
+    #print(t[1])
+    if isinstance(t[1], str) and t[1] in locals:
+        if 'print' not in globals:
+            globals.append('print')
+        globalsIndex = globals.index('print')
+
+
+        localsIndex = locals.index(t[1])
+        instructions.append(f"LOAD_FAST {localsIndex}")
+
+
+        instructions.append(f"LOAD_GLOBAL {globalsIndex}")
+        instructions.append(f"ROT_TWO")
+        instructions.append(f"CALL_FUNCTION 1")
+        instructions.append("POP_TOP")
+
 
 def p_expression_binop(t):
     '''expression : expression PLUS expression
@@ -158,7 +173,8 @@ def p_expression_number(t):
 def p_expression_name(t):
     'expression : NAME'
     try:
-        t[0] = names[t[1]]
+        #t[0] = names[t[1]]
+        t[0] = t[1]
     except LookupError:
         print("Undefined name '%s'" % t[1], file=sys.stderr)
         t[0] = 0
@@ -186,4 +202,5 @@ print(f'Locals: {locals}')
 print(f'Globals: {globals}')
 print('BEGIN')
 for x in instructions:
-    print(x)
+    print(f'{x:>5}')
+print("END")
