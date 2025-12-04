@@ -202,5 +202,5 @@ print(f'Locals: {locals}')
 print(f'Globals: {globals}')
 print('BEGIN')
 for x in instructions:
-    print(f'{x:>5}')
+    print(f'     {x}')
 print("END")
