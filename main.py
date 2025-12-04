@@ -82,6 +82,9 @@ precedence = (
 def p_statement_assign(t):
     'statement : NAME EQUALS expression'
     names[t[1]] = t[3]
+    locals.append(t[1])
+    localsIndex = locals.index(t[1])
+    instructions.append(f"STORE_FAST {localsIndex}")
 
 def p_statement_expr(t):
     'statement : expression'
@@ -97,26 +100,41 @@ def p_expression_binop(t):
     if t[2] == '+'  : #                 if const, load_const 0, load_const 1, BINARY_ADD, etc....
         t[0] = t[1] + t[3]
         instructions.append("BINARY_ADD")
-        print(instructions)
+        #print(instructions)
     elif t[2] == '-': 
         t[0] = t[1] - t[3]
         instructions.append("BINARY_SUBTRACT")#KEEP GOING WITH THESE
     elif t[2] == '*': 
         t[0] = t[1] * t[3]
+        instructions.append("BINARY_MULTIPLY")
     elif t[2] == '/': 
         t[0] = t[1] / t[3]
+        instructions.append("BINARY_TRUE_DIVIDE")
         if t[0].is_integer():
             t[0] = int(t[0])
 
             
             
         
-    elif t[2] == '%': t[0] = t[1] % t[3]
-    elif t[2] == '//': t[0] = t[1] // t[3]
+    elif t[2] == '%': 
+        t[0] = t[1] % t[3]
+        instructions.append("BINARY_MODULO")
+
+    elif t[2] == '//': 
+        t[0] = t[1] // t[3]
+        instructions.append("BINARY_FLOOR_DIVIDE")
 
 def p_expression_uminus(t):
     'expression : MINUS expression %prec UMINUS'
     t[0] = -t[2]
+    #constants.append(t[2])      #where my negative number stuff comes into play
+    constants.append(0)
+    # constIndex = constants.index(t[2])
+    # instructions.append(f'LOAD_CONST {constIndex}')
+    constIndex = constants.index(0)
+    instructions.append(f'LOAD_CONST {constIndex}')
+    instructions.append(f'ROT_TWO')
+    instructions.append(f'BINARY_SUBTRACT')
 
 def p_expression_group(t):
     'expression : LPAREN expression RPAREN'
@@ -126,8 +144,12 @@ def p_expression_number(t):
     'expression : NUMBER'
     t[0] = t[1]
     #append to constants
-    if t[1] not in constants:
+    if t[1] not in constants and t[1] > 0:
         constants.append(t[1])
+    # if t[1] not in constants and t[1] < 0:
+    #     t[1] = t[1] * -1
+    #     constants.append(t[1])
+    #     constants.append(0)
     constIndex = constants.index(t[1])
     instructions.append(f"LOAD_CONST {constIndex}")
 
@@ -148,9 +170,20 @@ def p_error(t):
 import ply.yacc as yacc
 parser = yacc.yacc()
 
-while True:
-    try:
-        s = input()   # Use raw_input on Python 2
-    except EOFError:
-        break
-    parser.parse(s)
+# while True:
+#     try:
+#         s = input()   # Use raw_input on Python 2
+#     except EOFError:
+#         break
+#     parser.parse(s)
+
+source = sys.stdin.read()
+for line in source.splitlines():
+    parser.parse(line)
+
+print(f'Constants: {constants}')
+print(f'Locals: {locals}')
+print(f'Globals: {globals}')
+print('BEGIN')
+for x in instructions:
+    print(x)
