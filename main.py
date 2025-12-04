@@ -26,6 +26,19 @@ t_NAME    = r'[a-zA-Z_][a-zA-Z0-9_]*'
 t_MODULO = r'%'
 t_FLOOR = r'//'
 
+# dictionary of names - variable storage
+names = { }
+#list of instructions - instructions torage
+instructions = []
+#liste of functions
+functions = []
+#list of constants
+constants = []
+#list of locals
+locals = []
+#list of globals
+globals = []
+
 
 def t_NUMBER(t):
     r'[0-9]+[.]?[0-9]*'
@@ -62,8 +75,9 @@ precedence = (
     ('right','UMINUS'),
     )
 
-# dictionary of names - variable storage
-names = { }
+
+
+
 
 def p_statement_assign(t):
     'statement : NAME EQUALS expression'
@@ -80,10 +94,13 @@ def p_expression_binop(t):
                   | expression DIVIDE expression
                   | expression MODULO expression
                   | expression FLOOR expression'''
-    if t[2] == '+'  : 
+    if t[2] == '+'  : #                 if const, load_const 0, load_const 1, BINARY_ADD, etc....
         t[0] = t[1] + t[3]
+        instructions.append("BINARY_ADD")
+        print(instructions)
     elif t[2] == '-': 
         t[0] = t[1] - t[3]
+        instructions.append("BINARY_SUBTRACT")#KEEP GOING WITH THESE
     elif t[2] == '*': 
         t[0] = t[1] * t[3]
     elif t[2] == '/': 
@@ -108,6 +125,13 @@ def p_expression_group(t):
 def p_expression_number(t):
     'expression : NUMBER'
     t[0] = t[1]
+    #append to constants
+    if t[1] not in constants:
+        constants.append(t[1])
+    constIndex = constants.index(t[1])
+    instructions.append(f"LOAD_CONST {constIndex}")
+
+
 
 def p_expression_name(t):
     'expression : NAME'
