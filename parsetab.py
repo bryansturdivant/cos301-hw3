@@ -6,7 +6,7 @@ _tabversion = '3.10'
 
 _lr_method = 'LALR'
 
-_lr_signature = 'leftPLUSMINUSleftTIMESDIVIDEMODULOFLOORrightUMINUSDIVIDE EQUALS FLOOR LPAREN MINUS MODULO NAME NUMBER PLUS RPAREN TIMESstatement : NAME EQUALS expressionstatement : expressionexpression : expression PLUS expression\n| expression MINUS expression\n| expression TIMES expression\n| expression DIVIDE expression\n| expression MODULO expression\n| expression FLOOR expressionexpression : MINUS expression %prec UMINUSexpression : LPAREN expression RPARENexpression : NUMBERexpression : NAME'
+_lr_signature = 'leftPLUSMINUSleftTIMESDIVIDEMODULOFLOORrightUMINUSDIVIDE EQUALS FLOOR LPAREN MINUS MODULO NAME NUMBER PLUS RPAREN TIMESstatement : NAME EQUALS expressionstatement : expressionexpression : expression PLUS expression\n                  | expression MINUS expression\n                  | expression TIMES expression\n                  | expression DIVIDE expression\n                  | expression MODULO expression\n                  | expression FLOOR expressionexpression : MINUS expression %prec UMINUSexpression : LPAREN expression RPARENexpression : NUMBERexpression : NAME'
     
 _lr_action_items = {'NAME':([0,4,5,7,8,9,10,11,12,13,],[2,15,15,15,15,15,15,15,15,15,]),'MINUS':([0,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,],[4,-12,9,4,4,-11,4,4,4,4,4,4,4,-9,-12,9,9,-3,-4,-5,-6,-7,-8,-10,]),'LPAREN':([0,4,5,7,8,9,10,11,12,13,],[5,5,5,5,5,5,5,5,5,5,]),'NUMBER':([0,4,5,7,8,9,10,11,12,13,],[6,6,6,6,6,6,6,6,6,6,]),'$end':([1,2,3,6,14,15,17,18,19,20,21,22,23,24,],[0,-12,-2,-11,-9,-12,-1,-3,-4,-5,-6,-7,-8,-10,]),'EQUALS':([2,],[7,]),'PLUS':([2,3,6,14,15,16,17,18,19,20,21,22,23,24,],[-12,8,-11,-9,-12,8,8,-3,-4,-5,-6,-7,-8,-10,]),'TIMES':([2,3,6,14,15,16,17,18,19,20,21,22,23,24,],[-12,10,-11,-9,-12,10,10,10,10,-5,-6,-7,-8,-10,]),'DIVIDE':([2,3,6,14,15,16,17,18,19,20,21,22,23,24,],[-12,11,-11,-9,-12,11,11,11,11,-5,-6,-7,-8,-10,]),'MODULO':([2,3,6,14,15,16,17,18,19,20,21,22,23,24,],[-12,12,-11,-9,-12,12,12,12,12,-5,-6,-7,-8,-10,]),'FLOOR':([2,3,6,14,15,16,17,18,19,20,21,22,23,24,],[-12,13,-11,-9,-12,13,13,13,13,-5,-6,-7,-8,-10,]),'RPAREN':([6,14,15,16,18,19,20,21,22,23,24,],[-11,-9,-12,24,-3,-4,-5,-6,-7,-8,-10,]),}
 
@@ -28,15 +28,15 @@ del _lr_goto_items
 _lr_productions = [
   ("S' -> statement","S'",1,None,None,None),
   ('statement -> NAME EQUALS expression','statement',3,'p_statement_assign','main.py',83),
-  ('statement -> expression','statement',1,'p_statement_expr','main.py',87),
-  ('expression -> expression PLUS expression','expression',3,'p_expression_binop','main.py',91),
-  ('expression -> expression MINUS expression','expression',3,'p_expression_binop','main.py',92),
-  ('expression -> expression TIMES expression','expression',3,'p_expression_binop','main.py',93),
-  ('expression -> expression DIVIDE expression','expression',3,'p_expression_binop','main.py',94),
-  ('expression -> expression MODULO expression','expression',3,'p_expression_binop','main.py',95),
-  ('expression -> expression FLOOR expression','expression',3,'p_expression_binop','main.py',96),
-  ('expression -> MINUS expression','expression',2,'p_expression_uminus','main.py',118),
-  ('expression -> LPAREN expression RPAREN','expression',3,'p_expression_group','main.py',122),
-  ('expression -> NUMBER','expression',1,'p_expression_number','main.py',126),
-  ('expression -> NAME','expression',1,'p_expression_name','main.py',137),
+  ('statement -> expression','statement',1,'p_statement_expr','main.py',90),
+  ('expression -> expression PLUS expression','expression',3,'p_expression_binop','main.py',109),
+  ('expression -> expression MINUS expression','expression',3,'p_expression_binop','main.py',110),
+  ('expression -> expression TIMES expression','expression',3,'p_expression_binop','main.py',111),
+  ('expression -> expression DIVIDE expression','expression',3,'p_expression_binop','main.py',112),
+  ('expression -> expression MODULO expression','expression',3,'p_expression_binop','main.py',113),
+  ('expression -> expression FLOOR expression','expression',3,'p_expression_binop','main.py',114),
+  ('expression -> MINUS expression','expression',2,'p_expression_uminus','main.py',143),
+  ('expression -> LPAREN expression RPAREN','expression',3,'p_expression_group','main.py',155),
+  ('expression -> NUMBER','expression',1,'p_expression_number','main.py',159),
+  ('expression -> NAME','expression',1,'p_expression_name','main.py',174),
 ]
